@@ -114,7 +114,7 @@ class RecognitionResult {
 
   @override
   String toString() {
-    return 'RecognitionResult(id: $id, breed: ${predictedBreed.name}, confidence: ${confidencePercentage})';
+    return 'RecognitionResult(id: $id, breed: ${predictedBreed.name}, confidence: $confidencePercentage)';
   }
 }
 
@@ -156,6 +156,6 @@ class PredictionScore {
 
   @override
   String toString() {
-    return 'PredictionScore(breed: ${breed.name}, confidence: ${confidencePercentage}, rank: $rank)';
+    return 'PredictionScore(breed: ${breed.name}, confidence: $confidencePercentage, rank: $rank)';
   }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Cat paw icon for app launcher -->
+    <group android:scaleX="0.8" android:scaleY="0.8" android:pivotX="54" android:pivotY="54">
+        <!-- Main paw pad -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,60C60,60 65,55 65,49C65,43 60,38 54,38C48,38 43,43 43,49C43,55 48,60 54,60Z"/>
+        <!-- Toe pads -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M44,38C46.2,38 48,36.2 48,34C48,31.8 46.2,30 44,30C41.8,30 40,31.8 40,34C40,36.2 41.8,38 44,38Z"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,36C56.2,36 58,34.2 58,32C58,29.8 56.2,28 54,28C51.8,28 50,29.8 50,32C50,34.2 51.8,36 54,36Z"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M64,38C66.2,38 68,36.2 68,34C68,31.8 66.2,30 64,30C61.8,30 60,31.8 60,34C60,36.2 61.8,38 64,38Z"/>
+        <!-- Additional toe pads -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M46,68C48.2,68 50,66.2 50,64C50,61.8 48.2,60 46,60C43.8,60 42,61.8 42,64C42,66.2 43.8,68 46,68Z"/>
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M62,68C64.2,68 66,66.2 66,64C66,61.8 64.2,60 62,60C59.8,60 58,61.8 58,64C58,66.2 59.8,68 62,68Z"/>
+    </group>
+</vector>

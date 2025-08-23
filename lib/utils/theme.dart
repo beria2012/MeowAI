@@ -9,6 +9,8 @@ class AppTheme {
   static const Color backgroundColor = Color(0xFFFFF8E1); // Cream
   static const Color surfaceColor = Color(0xFFFFFFFF); // White
   static const Color errorColor = Color(0xFFE57373); // Soft red
+  static const Color successColor = Color(0xFF81C784); // Success green
+  static const Color cardColor = Color(0xFFFFFFFF); // Card background
   
   // Dark theme colors
   static const Color darkPrimaryColor = Color(0xFFFF8A65);
@@ -70,8 +72,8 @@ class AppTheme {
         error: errorColor,
       ),
       
-      // Font family
-      fontFamily: 'Poppins',
+      // Font family (using system font for testing)
+      // fontFamily: 'Poppins',
       
       // App bar theme
       appBarTheme: const AppBarTheme(
@@ -81,7 +83,7 @@ class AppTheme {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textPrimary,
@@ -90,7 +92,7 @@ class AppTheme {
       ),
       
       // Card theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadiusMedium),
@@ -111,7 +113,7 @@ class AppTheme {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           textStyle: const TextStyle(
-            fontFamily: 'Poppins',
+            // fontFamily: 'Poppins',
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -126,7 +128,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(borderRadiusMedium),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Poppins',
+            // fontFamily: 'Poppins',
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
@@ -143,7 +145,7 @@ class AppTheme {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           textStyle: const TextStyle(
-            fontFamily: 'Poppins',
+            // fontFamily: 'Poppins',
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -175,13 +177,13 @@ class AppTheme {
           borderSide: const BorderSide(color: errorColor, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: textSecondary,
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
         ),
         labelStyle: const TextStyle(
           color: textPrimary,
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -202,11 +204,11 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
         selectedLabelStyle: TextStyle(
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontWeight: FontWeight.w600,
         ),
         unselectedLabelStyle: TextStyle(
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -233,8 +235,8 @@ class AppTheme {
         error: errorColor,
       ),
       
-      // Font family
-      fontFamily: 'Poppins',
+      // Font family (using system font for testing)
+      // fontFamily: 'Poppins',
       
       // App bar theme
       appBarTheme: const AppBarTheme(
@@ -244,7 +246,7 @@ class AppTheme {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontFamily: 'Poppins',
+          // fontFamily: 'Poppins',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: textLight,
@@ -253,7 +255,7 @@ class AppTheme {
       ),
       
       // Card theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadiusMedium),
@@ -270,57 +272,50 @@ class AppTheme {
 // Text styles
 class AppTextStyles {
   static const TextStyle headline1 = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 32,
     fontWeight: FontWeight.bold,
     color: AppTheme.textPrimary,
   );
   
   static const TextStyle headline2 = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 24,
     fontWeight: FontWeight.w600,
     color: AppTheme.textPrimary,
   );
   
   static const TextStyle headline3 = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 20,
     fontWeight: FontWeight.w600,
     color: AppTheme.textPrimary,
   );
   
   static const TextStyle bodyLarge = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppTheme.textPrimary,
   );
   
   static const TextStyle bodyMedium = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppTheme.textPrimary,
   );
   
   static const TextStyle bodySmall = TextStyle(
-    fontFamily: 'Poppins',
+    // fontFamily: 'Poppins',
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: AppTheme.textSecondary,
   );
   
-  static const TextStyle button = TextStyle(
-    fontFamily: 'Poppins',
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: AppTheme.textLight,
-  );
-  
   static const TextStyle caption = TextStyle(
-    fontFamily: 'Poppins',
-    fontSize: 12,
+    // fontFamily: 'Poppins',
+    fontSize: 10,
     fontWeight: FontWeight.w400,
     color: AppTheme.textSecondary,
   );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,14 +41,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   Future<void> _initializeServices() async {
     try {
-      await Future.wait([
-        CameraService().initialize(),
-        MLService().initialize(),
-        BreedDataService().initialize(),
+      print('Initializing home screen services...');
+      
+      // Add timeout to prevent hanging
+      await Future.any([
+        _initializeServicesWithTimeout(),
+        Future.delayed(Duration(seconds: 15), () => throw TimeoutException('Service initialization timed out', Duration(seconds: 15))),
       ]);
+      
+      print('Service initialization completed');
+    } on TimeoutException {
+      print('Service initialization timed out - some services may not be available');
     } catch (e) {
       print('Error initializing services: $e');
     }
+  }
+  
+  /// Initialize services with timeout helper
+  Future<void> _initializeServicesWithTimeout() async {
+    final results = await Future.wait([
+      CameraService().initialize().catchError((e) {
+        print('Camera service initialization failed: $e');
+        return false;
+      }),
+      MLService().initialize().catchError((e) {
+        print('ML service initialization failed: $e');
+        return false;
+      }),
+      BreedDataService().initialize().catchError((e) {
+        print('Breed data service initialization failed: $e');
+        return false;
+      }),
+    ]);
+    
+    final successCount = results.where((r) => r == true).length;
+    print('Services initialized: $successCount/3 successful');
   }
 
   @override
@@ -208,7 +237,7 @@ class _HomeTab extends StatelessWidget {
             const SizedBox(height: 24),
             const StatsOverviewCard(),
             const SizedBox(height: 24),
-            _buildFeaturesSection(),
+            _buildFeaturesSection(context),
             const SizedBox(height: 100), // Space for FAB
           ],
         ),
@@ -274,7 +303,7 @@ class _HomeTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Quick Actions',
           style: AppTextStyles.headline3,
         ).animate().fadeIn(delay: 600.ms, duration: 600.ms),
@@ -310,11 +339,11 @@ class _HomeTab extends StatelessWidget {
     );
   }
 
-  Widget _buildFeaturesSection() {
+  Widget _buildFeaturesSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Explore Features',
           style: AppTextStyles.headline3,
         ).animate().fadeIn(delay: 900.ms, duration: 600.ms),

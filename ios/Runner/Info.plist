@@ -66,6 +66,17 @@
 		<true/>
 	</dict>
 	
+	<!-- Local Network Usage Description (required for iOS 14+) -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>MeowAI uses local network access for Firebase services and cloud synchronization.</string>
+	
+	<!-- Bonjour Services (required for network discovery) -->
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_firebase._tcp</string>
+		<string>_googlecast._tcp</string>
+	</array>
+	
 	<!-- Supported file types for sharing -->
 	<key>CFBundleDocumentTypes</key>
 	<array>

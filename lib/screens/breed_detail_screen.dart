@@ -370,7 +370,7 @@ class _BreedDetailScreenState extends State<BreedDetailScreen>
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.history_edu,
                   color: AppTheme.primaryColor,
                   size: 24,

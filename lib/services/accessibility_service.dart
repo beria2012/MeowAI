@@ -194,7 +194,7 @@ class AccessibilityService {
       readOnly: readOnly,
       child: Text(
         text,
-        style: style?.copyWith(fontSize: (style?.fontSize ?? 14) * _textScaleFactor),
+        style: style?.copyWith(fontSize: (style.fontSize ?? 14) * _textScaleFactor),
       ),
     );
   }

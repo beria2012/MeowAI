@@ -185,7 +185,6 @@ class NotificationService {
         notificationDetails,
         payload: payload,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       );
     } catch (e) {
       print('Error scheduling notification: $e');
@@ -390,7 +389,7 @@ class NotificationService {
       'Cats can make over 100 vocal sounds.',
       'A cat\'s heart beats twice as fast as a human heart.',
       'Cats have a special scent organ called the Jacobson\'s organ.',
-      'The richest cat in the world inherited $7 million.',
+      'The richest cat in the world inherited \$7 million.',
       'Cats have excellent night vision and can see at one-sixth the light level required for human vision.',
       'A cat\'s brain is 90% similar to a human brain.',
       'Cats have scent glands in their faces.',

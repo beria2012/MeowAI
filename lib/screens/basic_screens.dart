@@ -254,7 +254,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
               color: AppTheme.errorColor,
             ),
             const SizedBox(height: 24),
-            Text(
+            const Text(
               'Recognition Failed',
               style: AppTextStyles.headline2,
               textAlign: TextAlign.center,
@@ -297,7 +297,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
               color: AppTheme.textSecondary,
             ),
             const SizedBox(height: 24),
-            Text(
+            const Text(
               'No Cat Detected',
               style: AppTextStyles.headline2,
               textAlign: TextAlign.center,
@@ -472,7 +472,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Quick Actions',
               style: AppTextStyles.headline3,
             ),
@@ -511,7 +511,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Breed Summary',
               style: AppTextStyles.headline3,
             ),
@@ -542,13 +542,13 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
                     Chip(
                       label: const Text('Rare Breed'),
                       backgroundColor: AppTheme.errorColor.withOpacity(0.1),
-                      labelStyle: TextStyle(color: AppTheme.errorColor),
+                      labelStyle: const TextStyle(color: AppTheme.errorColor),
                     ),
                   if (breed.isHypoallergenic)
                     Chip(
                       label: const Text('Hypoallergenic'),
                       backgroundColor: AppTheme.successColor.withOpacity(0.1),
-                      labelStyle: TextStyle(color: AppTheme.successColor),
+                      labelStyle: const TextStyle(color: AppTheme.successColor),
                     ),
                 ],
               ),
@@ -566,7 +566,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Alternative Predictions',
               style: AppTextStyles.headline3,
             ),
@@ -598,7 +598,7 @@ class _RecognitionResultScreenState extends State<RecognitionResultScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

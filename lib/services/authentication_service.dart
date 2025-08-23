@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/foundation.dart';
 
 import '../models/user.dart' as app_user;
 import 'database_service.dart';
@@ -63,7 +62,7 @@ class AuthenticationService {
           ?? app_user.UserPreferences.defaultPreferences();
       
       // Get or create user stats
-      final stats = app_user.UserStats(); // This could be loaded from database
+      final stats = const app_user.UserStats(); // This could be loaded from database
       
       return app_user.User(
         id: firebaseUser.uid,
@@ -93,7 +92,7 @@ class AuthenticationService {
       }
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
       // Create a new credential
       final credential = firebase_auth.GoogleAuthProvider.credential(
@@ -296,7 +295,7 @@ class AuthenticationService {
         return AuthResult.cancelled();
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final credential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -359,7 +358,7 @@ class AuthenticationService {
         return AuthResult.cancelled();
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
       final credential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -501,7 +500,7 @@ class AuthResult {
   }
 
   factory AuthResult.cancelled() {
-    return AuthResult._(
+    return const AuthResult._(
       isSuccess: false,
       error: 'Operation cancelled by user',
     );

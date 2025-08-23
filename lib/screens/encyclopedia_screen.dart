@@ -176,7 +176,7 @@ class _EncyclopediaScreenState extends State<EncyclopediaScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Filter Breeds',
                   style: AppTextStyles.headline2,
                 ),
@@ -618,7 +618,7 @@ class BreedCard extends StatelessWidget {
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.pets,
                   color: AppTheme.primaryColor,
                   size: 32,
@@ -704,7 +704,7 @@ class BreedCard extends StatelessWidget {
               
               const SizedBox(width: 16),
               
-              Icon(
+              const Icon(
                 Icons.arrow_forward_ios,
                 color: AppTheme.textSecondary,
                 size: 16,

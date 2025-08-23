@@ -7,8 +7,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import 'screens/basic_screens.dart';
 import 'screens/splash_screen.dart';
+import 'services/notification_service.dart';
+import 'services/database_service.dart';
 import 'utils/theme.dart';
 import 'utils/app_localizations.dart';
 import 'firebase_options.dart';
@@ -19,10 +20,11 @@ void main() async {
   // Setup error handling for production
   _setupErrorHandling();
   
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Initialize Firebase (temporarily disabled for development)
+  // TODO: Configure Firebase properly and uncomment the lines below
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   
   // Initialize Hive for local storage
   await Hive.initFlutter();

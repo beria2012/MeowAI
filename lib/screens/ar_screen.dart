@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+// ARCore import temporarily disabled for iOS compatibility
+// import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 
 import '../services/ar_service.dart';
 import '../models/cat_breed.dart';
@@ -25,7 +26,7 @@ class ARScreen extends StatefulWidget {
 class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
   final ARService _arService = ARService();
   
-  ArCoreController? _arController;
+  dynamic _arController; // ArCoreController? when arcore_flutter_plugin is available
   bool _isARSupported = false;
   bool _isARActive = false;
   bool _isLoading = true;
@@ -150,7 +151,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
       // Add floating text with breed name
       await _arService.addFloatingText(
         text: breed.name,
-        position: Vector3(0, 0.4, -0.7),
+        position: null, // Vector3(0, 0.4, -0.7) when ARCore is available
         color: AppTheme.primaryColor,
       );
 
@@ -170,7 +171,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
     }
   }
 
-  void _onArCoreViewCreated(ArCoreController controller) {
+  void _onArCoreViewCreated(dynamic controller) {
     _arController = controller;
     
     if (_isARSupported) {
@@ -226,9 +227,15 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
           // AR View or Placeholder
           if (_isARSupported && !_isLoading)
             Positioned.fill(
-              child: ArCoreView(
-                onArCoreViewCreated: _onArCoreViewCreated,
-                enableTapRecognizer: true,
+              child: Container(
+                color: Colors.black,
+                child: const Center(
+                  child: Text(
+                    'AR View\n(ARCore disabled for compatibility)',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
             )
           else
@@ -435,7 +442,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.pets,
                   color: AppTheme.primaryColor,
                   size: 20,
@@ -455,7 +462,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      '${widget.recognitionResult!.confidencePercentage}',
+                      widget.recognitionResult!.confidencePercentage,
                       style: AppTextStyles.caption.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -476,7 +483,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
-    ).animate().slideInUp(duration: 600.ms);
+    ).animate().slideY(begin: 1.0, end: 0.0, duration: 600.ms);
   }
 
   void _showBreedInfoDialog() {
@@ -516,7 +523,7 @@ class _ARScreenState extends State<ARScreen> with TickerProviderStateMixin {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(
+            child: const Text(
               'Close',
               style: TextStyle(color: AppTheme.primaryColor),
             ),

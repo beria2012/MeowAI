@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
                   borderRadius: BorderRadius.circular(AppTheme.borderRadiusXLarge),
                   boxShadow: AppTheme.softShadow,
                 ),
-                child: Center(
+                child: const Center(
                   child: Icon(
                     Icons.pets,
                     size: 80,
@@ -256,7 +256,7 @@ class _CatPawLoaderState extends State<CatPawLoader>
               scale: _animations[index].value,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(
+                child: const Icon(
                   Icons.pets,
                   color: Colors.white,
                   size: 20,

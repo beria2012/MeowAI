@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -184,7 +183,7 @@ class SharingService {
     buffer.writeln('Confidence: ${result.confidencePercentage}');
     buffer.writeln('Origin: ${result.predictedBreed.origin}');
     buffer.writeln();
-    buffer.writeln('${result.predictedBreed.description}');
+    buffer.writeln(result.predictedBreed.description);
     
     if (includeAppPromo) {
       buffer.writeln();

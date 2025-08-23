@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../models/cat_breed.dart';
 import '../models/recognition_result.dart';
 import '../models/user.dart';
-import '../models/challenge.dart';
 
 class DatabaseService {
   static const String _databaseName = 'meow_ai.db';
@@ -647,7 +644,7 @@ class DatabaseService {
     return {
       'is_initialized': _isInitialized,
       'sqlite_path': _database?.path,
-      'hive_boxes': Hive.boxNames.toList(),
+      'hive_boxes': [_boxUser, _boxChallenges, _boxAchievements, _boxPreferences],
     };
   }
 

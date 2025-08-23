@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 import '../utils/theme.dart';
 
@@ -306,7 +305,7 @@ class StatsOverviewCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.analytics,
                 color: AppTheme.primaryColor,
                 size: 24,
@@ -321,7 +320,7 @@ class StatsOverviewCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          Row(
+          const Row(
             children: [
               Expanded(
                 child: _StatItem(
