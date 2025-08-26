@@ -1,0 +1,818 @@
+[
+  {
+    "id": "abyssinian",
+    "name": "Abyssinian",
+    "origin": "Ethiopia",
+    "description": "Active, intelligent cats with distinctive ticked coats resembling wild rabbits. Known for their curiosity and athletic build.",
+    "temperament": "Active, Alert, Curious, Playful",
+    "life_span": "14-15 years",
+    "weight": "3.5-5.5 kg",
+    "colors": [
+      "Ruddy",
+      "Red",
+      "Blue",
+      "Fawn"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 5,
+    "social_needs": 4,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/abyssinian.jpg",
+    "ml_index": 0,
+    "available_for_recognition": true
+  },
+  {
+    "id": "american_shorthair",
+    "name": "American Shorthair",
+    "origin": "United States",
+    "description": "Well-balanced, healthy cats with easy-going personalities. Originally working cats, now beloved family companions.",
+    "temperament": "Easy Going, Calm, Gentle, Independent",
+    "life_span": "13-16 years",
+    "weight": "3.5-7 kg",
+    "colors": [
+      "Silver Tabby",
+      "Brown Tabby",
+      "Black",
+      "White"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/american_shorthair.jpg",
+    "ml_index": 1,
+    "available_for_recognition": true
+  },
+  {
+    "id": "american_wirehair",
+    "name": "American Wirehair",
+    "origin": "United States",
+    "description": "Unique cats with crimped, wiry coats. Known for their resilient nature and playful personality.",
+    "temperament": "Friendly, Independent, Playful, Calm",
+    "life_span": "12-16 years",
+    "weight": "3.5-7 kg",
+    "colors": [
+      "All colors accepted"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": true,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/american_wirehair.jpg",
+    "ml_index": 2,
+    "available_for_recognition": true
+  },
+  {
+    "id": "balinese",
+    "name": "Balinese",
+    "origin": "United States",
+    "description": "Long-haired Siamese with flowing coats and graceful movements. Extremely vocal and intelligent.",
+    "temperament": "Vocal, Intelligent, Social, Active",
+    "life_span": "12-16 years",
+    "weight": "2.5-5 kg",
+    "colors": [
+      "Point colors: Seal, Chocolate, Blue, Lilac"
+    ],
+    "is_hypoallergenic": true,
+    "is_rare": false,
+    "energy_level": 4,
+    "social_needs": 5,
+    "grooming_needs": 3,
+    "image_url": "assets/images/breeds/balinese.jpg",
+    "ml_index": 3,
+    "available_for_recognition": true
+  },
+  {
+    "id": "bengal",
+    "name": "Bengal",
+    "origin": "United States",
+    "description": "Wild-looking cats with leopard-like spots and energetic nature. Developed from Asian Leopard Cat crosses.",
+    "temperament": "Active, Athletic, Curious, Intelligent",
+    "life_span": "12-16 years",
+    "weight": "4-8 kg",
+    "colors": [
+      "Brown Spotted",
+      "Silver Spotted",
+      "Snow"
+    ],
+    "is_hypoallergenic": true,
+    "is_rare": false,
+    "energy_level": 5,
+    "social_needs": 4,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/bengal.jpg",
+    "ml_index": 4,
+    "available_for_recognition": true
+  },
+  {
+    "id": "british_shorthair",
+    "name": "British Shorthair",
+    "origin": "United Kingdom",
+    "description": "Round-faced, sturdy cats with plush coats and calm demeanor. The 'teddy bear' of cats.",
+    "temperament": "Calm, Easy Going, Gentle, Loyal",
+    "life_span": "12-17 years",
+    "weight": "4-8 kg",
+    "colors": [
+      "Blue",
+      "Silver",
+      "Golden",
+      "Black"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 2,
+    "social_needs": 3,
+    "grooming_needs": 3,
+    "image_url": "assets/images/breeds/british_shorthair.jpg",
+    "ml_index": 5,
+    "available_for_recognition": true
+  },
+  {
+    "id": "burmese",
+    "name": "Burmese",
+    "origin": "Myanmar",
+    "description": "Compact, muscular cats with golden eyes and silky coats. Extremely people-oriented and affectionate.",
+    "temperament": "Affectionate, Social, Playful, Vocal",
+    "life_span": "12-18 years",
+    "weight": "3-5.5 kg",
+    "colors": [
+      "Sable",
+      "Champagne",
+      "Blue",
+      "Platinum"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 4,
+    "social_needs": 5,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/burmese.jpg",
+    "ml_index": 6,
+    "available_for_recognition": true
+  },
+  {
+    "id": "chausie",
+    "name": "Chausie",
+    "origin": "Ancient Egypt/Modern US",
+    "description": "Large, athletic cats with wild jungle cat ancestry. Extremely active and requires lots of space.",
+    "temperament": "Active, Athletic, Intelligent, Independent",
+    "life_span": "12-14 years",
+    "weight": "6.5-11 kg",
+    "colors": [
+      "Brown Ticked Tabby",
+      "Black",
+      "Silver Tipped"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": true,
+    "energy_level": 5,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/chausie.jpg",
+    "ml_index": 7,
+    "available_for_recognition": true
+  },
+  {
+    "id": "cornish_rex",
+    "name": "Cornish Rex",
+    "origin": "Various",
+    "description": "Beautiful Cornish Rex cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/cornish_rex.jpg",
+    "ml_index": 8,
+    "available_for_recognition": true
+  },
+  {
+    "id": "cymric",
+    "name": "Cymric",
+    "origin": "Various",
+    "description": "Beautiful Cymric cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/cymric.jpg",
+    "ml_index": 9,
+    "available_for_recognition": true
+  },
+  {
+    "id": "cyprus",
+    "name": "Cyprus",
+    "origin": "Various",
+    "description": "Beautiful Cyprus cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/cyprus.jpg",
+    "ml_index": 10,
+    "available_for_recognition": true
+  },
+  {
+    "id": "donskoy",
+    "name": "Donskoy",
+    "origin": "Various",
+    "description": "Beautiful Donskoy cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/donskoy.jpg",
+    "ml_index": 11,
+    "available_for_recognition": true
+  },
+  {
+    "id": "egyptian_mau",
+    "name": "Egyptian Mau",
+    "origin": "Various",
+    "description": "Beautiful Egyptian Mau cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/egyptian_mau.jpg",
+    "ml_index": 12,
+    "available_for_recognition": true
+  },
+  {
+    "id": "european_shorthair",
+    "name": "European Shorthair",
+    "origin": "Various",
+    "description": "Beautiful European Shorthair cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/european_shorthair.jpg",
+    "ml_index": 13,
+    "available_for_recognition": true
+  },
+  {
+    "id": "german_rex",
+    "name": "German Rex",
+    "origin": "Various",
+    "description": "Beautiful German Rex cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/german_rex.jpg",
+    "ml_index": 14,
+    "available_for_recognition": true
+  },
+  {
+    "id": "himalayan",
+    "name": "Himalayan",
+    "origin": "Various",
+    "description": "Beautiful Himalayan cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/himalayan.jpg",
+    "ml_index": 15,
+    "available_for_recognition": true
+  },
+  {
+    "id": "japanese_bobtail",
+    "name": "Japanese Bobtail",
+    "origin": "Various",
+    "description": "Beautiful Japanese Bobtail cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/japanese_bobtail.jpg",
+    "ml_index": 16,
+    "available_for_recognition": true
+  },
+  {
+    "id": "karelian_bobtail",
+    "name": "Karelian Bobtail",
+    "origin": "Various",
+    "description": "Beautiful Karelian Bobtail cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/karelian_bobtail.jpg",
+    "ml_index": 17,
+    "available_for_recognition": true
+  },
+  {
+    "id": "khao_manee",
+    "name": "Khao Manee",
+    "origin": "Various",
+    "description": "Beautiful Khao Manee cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/khao_manee.jpg",
+    "ml_index": 18,
+    "available_for_recognition": true
+  },
+  {
+    "id": "lykoi",
+    "name": "Lykoi",
+    "origin": "Various",
+    "description": "Beautiful Lykoi cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/lykoi.jpg",
+    "ml_index": 19,
+    "available_for_recognition": true
+  },
+  {
+    "id": "manx",
+    "name": "Manx",
+    "origin": "Various",
+    "description": "Beautiful Manx cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/manx.jpg",
+    "ml_index": 20,
+    "available_for_recognition": true
+  },
+  {
+    "id": "munchkin",
+    "name": "Munchkin",
+    "origin": "Various",
+    "description": "Beautiful Munchkin cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/munchkin.jpg",
+    "ml_index": 21,
+    "available_for_recognition": true
+  },
+  {
+    "id": "nebelung",
+    "name": "Nebelung",
+    "origin": "Various",
+    "description": "Beautiful Nebelung cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/nebelung.jpg",
+    "ml_index": 22,
+    "available_for_recognition": true
+  },
+  {
+    "id": "ocicat",
+    "name": "Ocicat",
+    "origin": "Various",
+    "description": "Beautiful Ocicat cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/ocicat.jpg",
+    "ml_index": 23,
+    "available_for_recognition": true
+  },
+  {
+    "id": "oriental_shorthair",
+    "name": "Oriental Shorthair",
+    "origin": "Various",
+    "description": "Beautiful Oriental Shorthair cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/oriental_shorthair.jpg",
+    "ml_index": 24,
+    "available_for_recognition": true
+  },
+  {
+    "id": "persian",
+    "name": "Persian",
+    "origin": "Various",
+    "description": "Beautiful Persian cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/persian.jpg",
+    "ml_index": 25,
+    "available_for_recognition": true
+  },
+  {
+    "id": "peterbald",
+    "name": "Peterbald",
+    "origin": "Various",
+    "description": "Beautiful Peterbald cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/peterbald.jpg",
+    "ml_index": 26,
+    "available_for_recognition": true
+  },
+  {
+    "id": "pixie_bob",
+    "name": "Pixie Bob",
+    "origin": "Various",
+    "description": "Beautiful Pixie Bob cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/pixie_bob.jpg",
+    "ml_index": 27,
+    "available_for_recognition": true
+  },
+  {
+    "id": "ragamuffin",
+    "name": "Ragamuffin",
+    "origin": "Various",
+    "description": "Beautiful Ragamuffin cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/ragamuffin.jpg",
+    "ml_index": 28,
+    "available_for_recognition": true
+  },
+  {
+    "id": "ragdoll",
+    "name": "Ragdoll",
+    "origin": "Various",
+    "description": "Beautiful Ragdoll cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/ragdoll.jpg",
+    "ml_index": 29,
+    "available_for_recognition": true
+  },
+  {
+    "id": "savannah",
+    "name": "Savannah",
+    "origin": "Various",
+    "description": "Beautiful Savannah cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/savannah.jpg",
+    "ml_index": 30,
+    "available_for_recognition": true
+  },
+  {
+    "id": "scottish_fold",
+    "name": "Scottish Fold",
+    "origin": "Various",
+    "description": "Beautiful Scottish Fold cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/scottish_fold.jpg",
+    "ml_index": 31,
+    "available_for_recognition": true
+  },
+  {
+    "id": "selkirk_rex",
+    "name": "Selkirk Rex",
+    "origin": "Various",
+    "description": "Beautiful Selkirk Rex cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/selkirk_rex.jpg",
+    "ml_index": 32,
+    "available_for_recognition": true
+  },
+  {
+    "id": "serengeti",
+    "name": "Serengeti",
+    "origin": "Various",
+    "description": "Beautiful Serengeti cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/serengeti.jpg",
+    "ml_index": 33,
+    "available_for_recognition": true
+  },
+  {
+    "id": "sokoke",
+    "name": "Sokoke",
+    "origin": "Various",
+    "description": "Beautiful Sokoke cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/sokoke.jpg",
+    "ml_index": 34,
+    "available_for_recognition": true
+  },
+  {
+    "id": "thai",
+    "name": "Thai",
+    "origin": "Various",
+    "description": "Beautiful Thai cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/thai.jpg",
+    "ml_index": 35,
+    "available_for_recognition": true
+  },
+  {
+    "id": "tonkinese",
+    "name": "Tonkinese",
+    "origin": "Various",
+    "description": "Beautiful Tonkinese cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/tonkinese.jpg",
+    "ml_index": 36,
+    "available_for_recognition": true
+  },
+  {
+    "id": "turkish_angora",
+    "name": "Turkish Angora",
+    "origin": "Various",
+    "description": "Beautiful Turkish Angora cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/turkish_angora.jpg",
+    "ml_index": 37,
+    "available_for_recognition": true
+  },
+  {
+    "id": "turkish_van",
+    "name": "Turkish Van",
+    "origin": "Various",
+    "description": "Beautiful Turkish Van cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/turkish_van.jpg",
+    "ml_index": 38,
+    "available_for_recognition": true
+  },
+  {
+    "id": "vankedisi",
+    "name": "Vankedisi",
+    "origin": "Various",
+    "description": "Beautiful Vankedisi cats with unique characteristics and charming personalities.",
+    "temperament": "Friendly, Intelligent, Playful",
+    "life_span": "12-15 years",
+    "weight": "3-6 kg",
+    "colors": [
+      "Various"
+    ],
+    "is_hypoallergenic": false,
+    "is_rare": false,
+    "energy_level": 3,
+    "social_needs": 3,
+    "grooming_needs": 2,
+    "image_url": "assets/images/breeds/vankedisi.jpg",
+    "ml_index": 39,
+    "available_for_recognition": true
+  }
+]

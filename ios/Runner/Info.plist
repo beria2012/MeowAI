@@ -55,9 +55,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MeowAI can save recognized cat photos to your photo library.</string>
 	
-	<!-- Microphone permission (required by camera plugin) -->
-	<key>NSMicrophoneUsageDescription</key>
-	<string>MeowAI may need microphone access for camera functionality.</string>
+	<!-- Microphone permission removed - app only needs camera for photos, not video -->
 	
 	<!-- Network access -->
 	<key>NSAppTransportSecurity</key>

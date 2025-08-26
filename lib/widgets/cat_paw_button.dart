@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../utils/theme.dart';
+import '../services/stats_service.dart';
 
 class CatPawButton extends StatefulWidget {
   final VoidCallback onPressed;
@@ -271,7 +272,10 @@ class BreedOfTheDayCard extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                // Navigate to encyclopedia tab to learn more about breeds
+                Navigator.of(context).pushNamed('/encyclopedia');
+              },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.white.withOpacity(0.2),
                 foregroundColor: Colors.white,
@@ -288,8 +292,43 @@ class BreedOfTheDayCard extends StatelessWidget {
   }
 }
 
-class StatsOverviewCard extends StatelessWidget {
+class StatsOverviewCard extends StatefulWidget {
   const StatsOverviewCard({super.key});
+
+  @override
+  State<StatsOverviewCard> createState() => _StatsOverviewCardState();
+}
+
+class _StatsOverviewCardState extends State<StatsOverviewCard> {
+  final StatsService _statsService = StatsService();
+  bool _isLoading = true;
+  Map<String, dynamic> _stats = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    try {
+      final success = await _statsService.initialize();
+      if (success) {
+        setState(() {
+          _stats = _statsService.getStatsOverview();
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -317,37 +356,58 @@ class StatsOverviewCard extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
+              const Spacer(),
+              if (_isLoading)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: 20),
-          const Row(
-            children: [
-              Expanded(
-                child: _StatItem(
-                  label: 'Recognized',
-                  value: '42',
-                  icon: Icons.camera_alt,
-                  color: AppTheme.primaryColor,
+          if (_isLoading)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Loading stats...',
+                  style: AppTextStyles.bodyMedium,
                 ),
               ),
-              Expanded(
-                child: _StatItem(
-                  label: 'Breeds Found',
-                  value: '15',
-                  icon: Icons.pets,
-                  color: AppTheme.secondaryColor,
+            )
+          else
+            Row(
+              children: [
+                Expanded(
+                  child: _StatItem(
+                    label: 'Recognized',
+                    value: '${_stats['totalRecognitions'] ?? 0}',
+                    icon: Icons.camera_alt,
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _StatItem(
-                  label: 'Streak Days',
-                  value: '7',
-                  icon: Icons.local_fire_department,
-                  color: AppTheme.errorColor,
+                Expanded(
+                  child: _StatItem(
+                    label: 'Breeds Found',
+                    value: '${_stats['uniqueBreeds'] ?? 0}',
+                    icon: Icons.pets,
+                    color: AppTheme.secondaryColor,
+                  ),
                 ),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: _StatItem(
+                    label: 'Streak Days',
+                    value: '${_stats['streakDays'] ?? 0}',
+                    icon: Icons.local_fire_department,
+                    color: AppTheme.errorColor,
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

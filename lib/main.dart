@@ -3,22 +3,27 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import 'screens/splash_screen.dart';
+import 'screens/home_screen.dart';
 import 'services/notification_service.dart';
 import 'services/database_service.dart';
+import 'services/ml_service.dart';
+import 'services/breed_data_service.dart';
+import 'services/stats_service.dart';
 import 'utils/theme.dart';
 import 'utils/app_localizations.dart';
-import 'firebase_options.dart';
 
 void main() async {
+  print('🚀 Starting MeowAI app initialization...');
   WidgetsFlutterBinding.ensureInitialized();
+  print('✅ Flutter bindings initialized');
   
   // Setup error handling for production
   _setupErrorHandling();
+  print('✅ Error handling setup complete');
   
   // Initialize Firebase (temporarily disabled for development)
   // TODO: Configure Firebase properly and uncomment the lines below
@@ -27,28 +32,43 @@ void main() async {
   // );
   
   // Initialize Hive for local storage
-  await Hive.initFlutter();
+  print('📦 Initializing Hive...');
+  try {
+    await Hive.initFlutter().timeout(const Duration(seconds: 10));
+    print('✅ Hive initialized');
+  } catch (e) {
+    print('⚠️ Hive initialization failed: $e, continuing anyway...');
+  }
   
   // Initialize timezone data for notifications
+  print('🕒 Initializing timezone data...');
   tz.initializeTimeZones();
-  
-  // Initialize services with error handling
-  await _initializeServices();
+  print('✅ Timezone data initialized');
   
   // Set preferred orientations
+  print('📱 Setting device orientations...');
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  print('✅ Device orientations set');
   
   // Optimize memory usage
+  print('🧠 Optimizing memory usage...');
   _optimizeMemoryUsage();
+  print('✅ Memory optimization complete');
   
+  print('🎨 Starting app widget...');
   runApp(
     const ProviderScope(
       child: MeowAIApp(),
     ),
   );
+  print('✅ App widget started');
+  
+  // Initialize services after app is running (non-blocking)
+  print('⚙️ Initializing services in background...');
+  _initializeServicesAsync();
 }
 
 /// Setup comprehensive error handling for production
@@ -73,18 +93,40 @@ void _setupErrorHandling() {
   };
 }
 
+/// Initialize services asynchronously in background (non-blocking)
+void _initializeServicesAsync() {
+  // Run in background without blocking UI
+  Future.microtask(() async {
+    await _initializeServices();
+  });
+}
+
 /// Initialize all app services with error handling
 Future<void> _initializeServices() async {
   try {
-    // Initialize notification service
+    print('  📢 Initializing notification service...');
     await NotificationService().initialize();
+    print('  ✅ Notification service ready');
     
-    // Initialize database
+    print('  🗄️ Initializing database service...');
     await DatabaseService().initialize();
+    print('  ✅ Database service ready');
+    
+    print('  📊 Initializing stats service...');
+    await StatsService().initialize();
+    print('  ✅ Stats service ready');
+    
+    print('  📚 Initializing breed data service...');
+    await BreedDataService().initialize();
+    print('  ✅ Breed data service ready');
+    
+    print('  🧠 Initializing ML service...');
+    await MLService().initialize();
+    print('  ✅ ML service ready');
     
     print('All services initialized successfully');
   } catch (e, stack) {
-    print('Error initializing services: $e');
+    print('❌ Error initializing services: $e');
     _logError(e, stack);
   }
 }
@@ -154,6 +196,13 @@ class MeowAIApp extends ConsumerWidget {
       
       // App entry point
       home: const SplashScreen(),
+      
+      // Routes configuration for navigation fallbacks
+      routes: {
+        '/home': (context) => const HomeScreen(),
+        '/splash': (context) => const SplashScreen(),
+        '/encyclopedia': (context) => const HomeScreen(), // Navigate to home screen with encyclopedia tab
+      },
     );
   }
 }

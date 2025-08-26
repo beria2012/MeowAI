@@ -38,51 +38,109 @@ class DatabaseService {
     if (_isInitialized) return true;
     
     try {
-      // Initialize Hive
-      await _initializeHive();
+      print('  🗄️ DatabaseService: Starting initialization...');
       
-      // Initialize SQLite
-      await _initializeSQLite();
+      // Initialize Hive and SQLite sequentially to handle errors properly
+      bool hiveSuccess = false;
+      bool sqliteSuccess = false;
       
-      _isInitialized = true;
-      print('Database service initialized successfully');
-      return true;
+      try {
+        await _initializeHive();
+        hiveSuccess = true;
+        print('  ✅ DatabaseService: Hive initialized successfully');
+      } catch (e) {
+        print('  ❌ DatabaseService: Hive initialization failed: $e');
+      }
+      
+      try {
+        await _initializeSQLite();
+        sqliteSuccess = true;
+        print('  ✅ DatabaseService: SQLite initialized successfully');
+      } catch (e) {
+        print('  ❌ DatabaseService: SQLite initialization failed: $e');
+      }
+      
+      if (hiveSuccess && sqliteSuccess) {
+        _isInitialized = true;
+        print('  ✅ DatabaseService: All databases initialized successfully');
+        return true;
+      } else if (hiveSuccess) {
+        print('  ⚠️ DatabaseService: Partial initialization - only Hive available');
+        _isInitialized = true; // Allow partial initialization
+        return true;
+      } else {
+        print('  ❌ DatabaseService: Database initialization failed');
+        return false;
+      }
     } catch (e) {
-      print('Error initializing database service: $e');
+      print('  ❌ DatabaseService: Error during initialization: $e');
       return false;
     }
   }
 
   /// Initialize Hive database
   Future<void> _initializeHive() async {
-    if (!Hive.isAdapterRegistered(0)) {
-      // Register Hive adapters for custom types
-      // Note: In a real implementation, you'd generate these with build_runner
-      // Hive.registerAdapter(CatBreedAdapter());
-      // Hive.registerAdapter(UserAdapter());
-      // Hive.registerAdapter(ChallengeAdapter());
+    try {
+      print('    📦 DatabaseService: Initializing Hive...');
+      
+      if (!Hive.isAdapterRegistered(0)) {
+        // Register Hive adapters for custom types
+        // Note: In a real implementation, you'd generate these with build_runner
+        // Hive.registerAdapter(CatBreedAdapter());
+        // Hive.registerAdapter(UserAdapter());
+        // Hive.registerAdapter(ChallengeAdapter());
+      }
+      
+      // Open Hive boxes concurrently
+      await Future.wait([
+        Hive.openBox(_boxUser).catchError((e) {
+          print('    ⚠️ DatabaseService: Failed to open user box: $e');
+          return null;
+        }),
+        Hive.openBox(_boxChallenges).catchError((e) {
+          print('    ⚠️ DatabaseService: Failed to open challenges box: $e');
+          return null;
+        }),
+        Hive.openBox(_boxAchievements).catchError((e) {
+          print('    ⚠️ DatabaseService: Failed to open achievements box: $e');
+          return null;
+        }),
+        Hive.openBox(_boxPreferences).catchError((e) {
+          print('    ⚠️ DatabaseService: Failed to open preferences box: $e');
+          return null;
+        }),
+      ], eagerError: false);
+      
+      print('    ✅ DatabaseService: Hive initialization complete');
+    } catch (e) {
+      print('    ❌ DatabaseService: Hive initialization failed: $e');
+      rethrow;
     }
-    
-    // Open Hive boxes
-    await Future.wait([
-      Hive.openBox(_boxUser),
-      Hive.openBox(_boxChallenges),
-      Hive.openBox(_boxAchievements),
-      Hive.openBox(_boxPreferences),
-    ]);
   }
 
   /// Initialize SQLite database
   Future<void> _initializeSQLite() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final dbPath = path.join(documentsDirectory.path, _databaseName);
-    
-    _database = await openDatabase(
-      dbPath,
-      version: _databaseVersion,
-      onCreate: _onCreate,
-      onUpgrade: _onUpgrade,
-    );
+    try {
+      print('    🗄️ DatabaseService: Initializing SQLite...');
+      
+      final documentsDirectory = await getApplicationDocumentsDirectory();
+      final dbPath = path.join(documentsDirectory.path, _databaseName);
+      
+      _database = await openDatabase(
+        dbPath,
+        version: _databaseVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+        onOpen: (db) {
+          print('    ✅ DatabaseService: SQLite database opened successfully');
+        },
+      );
+      
+      print('    ✅ DatabaseService: SQLite initialization complete');
+    } catch (e) {
+      print('    ❌ DatabaseService: SQLite initialization failed: $e');
+      rethrow;
+    }
   }
 
   /// Create database tables

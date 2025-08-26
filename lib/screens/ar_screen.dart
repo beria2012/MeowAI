@@ -7,7 +7,6 @@ import '../services/ar_service.dart';
 import '../models/cat_breed.dart';
 import '../models/recognition_result.dart';
 import '../utils/theme.dart';
-import '../widgets/cat_paw_button.dart';
 
 class ARScreen extends StatefulWidget {
   final CatBreed? breed;

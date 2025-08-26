@@ -35,9 +35,8 @@ dependencies:
   image: ^3.3.0
   path_provider: ^2.0.15
   
-  # Machine Learning (temporarily disabled for iOS compatibility)
-  # tflite_flutter: ^0.10.0
-  # tflite_flutter_helper: ^0.3.1
+  # Machine Learning (disabled due to Android namespace compatibility issues)
+  # tflite_flutter: ^0.9.0  # Namespace conflicts prevent compilation
   
   # Database & Storage
   sqflite: ^2.3.0
@@ -113,13 +112,27 @@ flutter:
   uses-material-design: true
   generate: true
 
-  # Assets
+  # Assets - Comprehensive declaration for Flutter asset bundling
+  # Note: Large binary files (like TensorFlow Lite models) require explicit declaration
   assets:
-    - assets/images/
+    # Model files (explicit declaration for large binary assets)
+    - assets/models/model.tflite
+    - assets/models/labels.txt
+    - assets/models/model_info.json
     - assets/models/
+    
+    # Data files
+    - assets/data/comprehensive_cat_breeds.json
+    - assets/data/enhanced_breeds.json
+    - assets/data/
+    
+    # Image directories
+    - assets/images/
+    - assets/images/breeds/
+    
+    # Other asset directories
     - assets/icons/
     - assets/animations/
-    - assets/data/
 
   # Fonts (using system fonts for now)
   # fonts:

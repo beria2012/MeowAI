@@ -1,0 +1,69 @@
+{
+  "model_name": "all_breeds_high_accuracy_v1_final_converted",
+  "version": "1.0.0",
+  "compatibility": "TensorFlow Lite 2.14.0+ (converted model)",
+  "type": "EfficientNetV2-B3 (original model, converted)",
+  "input_size": [
+    384,
+    384,
+    3
+  ],
+  "output_size": 40,
+  "num_classes": 40,
+  "note": "Original trained model, converted for Android. REAL recognition of 40 cat breeds!",
+  "preprocessing": {
+    "normalize": true,
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "breeds": [
+    "abyssinian",
+    "american_shorthair",
+    "american_wirehair",
+    "balinese",
+    "bengal",
+    "british_shorthair",
+    "burmese",
+    "chausie",
+    "cornish_rex",
+    "cymric",
+    "cyprus",
+    "donskoy",
+    "egyptian_mau",
+    "european_shorthair",
+    "german_rex",
+    "himalayan",
+    "japanese_bobtail",
+    "karelian_bobtail",
+    "khao_manee",
+    "lykoi",
+    "manx",
+    "munchkin",
+    "nebelung",
+    "ocicat",
+    "oriental_shorthair",
+    "persian",
+    "peterbald",
+    "pixie_bob",
+    "ragamuffin",
+    "ragdoll",
+    "savannah",
+    "scottish_fold",
+    "selkirk_rex",
+    "serengeti",
+    "sokoke",
+    "thai",
+    "tonkinese",
+    "turkish_angora",
+    "turkish_van",
+    "vankedisi"
+  ]
+}

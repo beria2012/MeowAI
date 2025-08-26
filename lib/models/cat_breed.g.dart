@@ -25,21 +25,24 @@ class CatBreedAdapter extends TypeAdapter<CatBreed> {
       lifeSpan: fields[5] as String,
       weight: fields[6] as String,
       imageUrl: fields[7] as String,
-      characteristics: (fields[8] as List).cast<String>(),
-      history: fields[9] as String,
-      energyLevel: fields[10] as int,
-      sheddingLevel: fields[11] as int,
-      socialNeeds: fields[12] as int,
-      groomingNeeds: fields[13] as int,
-      isHypoallergenic: fields[14] as bool,
-      isRare: fields[15] as bool,
+      colors: (fields[8] as List).cast<String>(),
+      characteristics: (fields[9] as List).cast<String>(),
+      history: fields[10] as String,
+      energyLevel: fields[11] as int,
+      sheddingLevel: fields[12] as int,
+      socialNeeds: fields[13] as int,
+      groomingNeeds: fields[14] as int,
+      isHypoallergenic: fields[15] as bool,
+      isRare: fields[16] as bool,
+      mlIndex: fields[17] as int?,
+      availableForRecognition: fields[18] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CatBreed obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(19)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -57,21 +60,27 @@ class CatBreedAdapter extends TypeAdapter<CatBreed> {
       ..writeByte(7)
       ..write(obj.imageUrl)
       ..writeByte(8)
-      ..write(obj.characteristics)
+      ..write(obj.colors)
       ..writeByte(9)
-      ..write(obj.history)
+      ..write(obj.characteristics)
       ..writeByte(10)
-      ..write(obj.energyLevel)
+      ..write(obj.history)
       ..writeByte(11)
-      ..write(obj.sheddingLevel)
+      ..write(obj.energyLevel)
       ..writeByte(12)
-      ..write(obj.socialNeeds)
+      ..write(obj.sheddingLevel)
       ..writeByte(13)
-      ..write(obj.groomingNeeds)
+      ..write(obj.socialNeeds)
       ..writeByte(14)
-      ..write(obj.isHypoallergenic)
+      ..write(obj.groomingNeeds)
       ..writeByte(15)
-      ..write(obj.isRare);
+      ..write(obj.isHypoallergenic)
+      ..writeByte(16)
+      ..write(obj.isRare)
+      ..writeByte(17)
+      ..write(obj.mlIndex)
+      ..writeByte(18)
+      ..write(obj.availableForRecognition);
   }
 
   @override
@@ -95,19 +104,24 @@ CatBreed _$CatBreedFromJson(Map<String, dynamic> json) => CatBreed(
       description: json['description'] as String,
       origin: json['origin'] as String,
       temperament: json['temperament'] as String,
-      lifeSpan: json['lifeSpan'] as String,
+      lifeSpan: json['life_span'] as String,
       weight: json['weight'] as String,
-      imageUrl: json['imageUrl'] as String,
-      characteristics: (json['characteristics'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      history: json['history'] as String,
-      energyLevel: (json['energyLevel'] as num).toInt(),
-      sheddingLevel: (json['sheddingLevel'] as num).toInt(),
-      socialNeeds: (json['socialNeeds'] as num).toInt(),
-      groomingNeeds: (json['groomingNeeds'] as num).toInt(),
-      isHypoallergenic: json['isHypoallergenic'] as bool,
-      isRare: json['isRare'] as bool,
+      imageUrl: json['image_url'] as String,
+      colors:
+          (json['colors'] as List<dynamic>).map((e) => e as String).toList(),
+      characteristics: (json['characteristics'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      history: json['history'] as String? ?? '',
+      energyLevel: (json['energy_level'] as num).toInt(),
+      sheddingLevel: (json['sheddingLevel'] as num?)?.toInt() ?? 2,
+      socialNeeds: (json['social_needs'] as num).toInt(),
+      groomingNeeds: (json['grooming_needs'] as num).toInt(),
+      isHypoallergenic: json['is_hypoallergenic'] as bool,
+      isRare: json['is_rare'] as bool,
+      mlIndex: (json['ml_index'] as num?)?.toInt(),
+      availableForRecognition: json['available_for_recognition'] as bool?,
     );
 
 Map<String, dynamic> _$CatBreedToJson(CatBreed instance) => <String, dynamic>{
@@ -116,15 +130,18 @@ Map<String, dynamic> _$CatBreedToJson(CatBreed instance) => <String, dynamic>{
       'description': instance.description,
       'origin': instance.origin,
       'temperament': instance.temperament,
-      'lifeSpan': instance.lifeSpan,
+      'life_span': instance.lifeSpan,
       'weight': instance.weight,
-      'imageUrl': instance.imageUrl,
+      'image_url': instance.imageUrl,
+      'colors': instance.colors,
       'characteristics': instance.characteristics,
       'history': instance.history,
-      'energyLevel': instance.energyLevel,
+      'energy_level': instance.energyLevel,
       'sheddingLevel': instance.sheddingLevel,
-      'socialNeeds': instance.socialNeeds,
-      'groomingNeeds': instance.groomingNeeds,
-      'isHypoallergenic': instance.isHypoallergenic,
-      'isRare': instance.isRare,
+      'social_needs': instance.socialNeeds,
+      'grooming_needs': instance.groomingNeeds,
+      'is_hypoallergenic': instance.isHypoallergenic,
+      'is_rare': instance.isRare,
+      'ml_index': instance.mlIndex,
+      'available_for_recognition': instance.availableForRecognition,
     };

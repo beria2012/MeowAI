@@ -89,7 +89,12 @@ class _EncyclopediaScreenState extends State<EncyclopediaScreen>
     
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      filtered = _breedService.searchBreeds(_searchQuery);
+      filtered = _breedService.getAllBreeds().where((breed) {
+        final query = _searchQuery.toLowerCase();
+        return breed.name.toLowerCase().contains(query) ||
+               breed.origin.toLowerCase().contains(query) ||
+               breed.temperament.toLowerCase().contains(query);
+      }).toList();
     }
     
     // Apply category filter
@@ -610,18 +615,13 @@ class BreedCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // Breed image placeholder
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-                ),
-                child: const Icon(
-                  Icons.pets,
-                  color: AppTheme.primaryColor,
-                  size: 32,
+              // Breed image with real photo attempt and fallback
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
+                child: SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: _buildBreedCardImage(breed),
                 ),
               ),
               
@@ -728,6 +728,54 @@ class BreedCard extends StatelessWidget {
         style: AppTextStyles.caption.copyWith(
           color: color,
           fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBreedCardImage(CatBreed breed) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Try to load actual breed image first
+        Image.asset(
+          breed.imageUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            // Fallback to gradient placeholder when image not found
+            return _buildBreedImagePlaceholder(breed);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBreedImagePlaceholder(CatBreed breed) {
+    // Create unique gradient colors based on breed name
+    final hash = breed.name.hashCode;
+    final gradients = [
+      [AppTheme.primaryColor, AppTheme.accentColor],
+      [AppTheme.secondaryColor, const Color(0xFF4CAF50)],
+      [AppTheme.primaryColor, AppTheme.secondaryColor],
+      [const Color(0xFF9C27B0), const Color(0xFFE91E63)],
+      [const Color(0xFF2196F3), const Color(0xFF03DAC6)],
+      [const Color(0xFFFF5722), const Color(0xFFFF9800)],
+    ];
+    final colors = gradients[hash.abs() % gradients.length];
+    
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: colors,
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          Icons.pets,
+          color: Colors.white.withOpacity(0.8),
+          size: 32,
         ),
       ),
     );

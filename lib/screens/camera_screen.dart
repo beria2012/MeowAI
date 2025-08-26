@@ -145,6 +145,12 @@ class _CameraScreenState extends State<CameraScreen>
       if (imagePath != null) {
         await _processImage(imagePath);
       }
+    } on PermissionException catch (permissionError) {
+      _showPermissionErrorDialog(
+        title: 'Photo Access Required',
+        message: permissionError.message,
+        canOpenSettings: permissionError.canOpenSettings,
+      );
     } catch (e) {
       print('Error picking from gallery: $e');
       _showErrorDialog('Failed to pick image: $e');
@@ -188,6 +194,85 @@ class _CameraScreenState extends State<CameraScreen>
           ),
         ],
       ),
+    );
+  }
+
+  void _showPermissionErrorDialog({
+    required String title,
+    required String message,
+    required bool canOpenSettings,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppTheme.cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: AppTheme.accentColor,
+                size: 28,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyles.headline3.copyWith(
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            message,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppTheme.textSecondary,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
+            ),
+            if (canOpenSettings)
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  final cameraService = CameraService();
+                  await cameraService.openAppSettings();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Open Settings'),
+              )
+            else
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _pickFromGallery(); // Retry
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Try Again'),
+              ),
+          ],
+        );
+      },
     );
   }
 

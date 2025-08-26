@@ -23,9 +23,14 @@ class NotificationService {
 
   /// Initialize the notification service
   Future<bool> initialize() async {
-    if (_isInitialized) return true;
+    if (_isInitialized) {
+      print('  📢 NotificationService: Already initialized');
+      return true;
+    }
 
     try {
+      print('  📢 NotificationService: Starting initialization...');
+      
       // Android initialization
       const androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
       
@@ -41,24 +46,50 @@ class NotificationService {
         iOS: iosInitialize,
       );
 
+      print('    📢 NotificationService: Initializing plugin...');
       await _notificationsPlugin.initialize(
         initializationSettings,
         onDidReceiveNotificationResponse: _onNotificationTapped,
       );
 
-      // Create notification channel for Android
-      if (Platform.isAndroid) {
-        await _createNotificationChannel();
-      }
-
-      // Request permissions
-      await _requestPermissions();
-
+      // Run channel creation and permission requests concurrently
+      print('    📢 NotificationService: Setting up channels and permissions...');
+      final results = await Future.wait([
+        _createNotificationChannelSafe(),
+        _requestPermissionsSafe(),
+      ], eagerError: false);
+      
+      final channelSuccess = results[0];
+      final permissionSuccess = results[1];
+      
       _isInitialized = true;
-      print('Notification service initialized successfully');
+      print('  ✅ NotificationService: Initialization complete (Channel: $channelSuccess, Permissions: $permissionSuccess)');
       return true;
     } catch (e) {
-      print('Error initializing notification service: $e');
+      print('  ❌ NotificationService: Error during initialization: $e');
+      return false;
+    }
+  }
+
+  /// Create notification channel for Android (with error handling)
+  Future<bool> _createNotificationChannelSafe() async {
+    if (!Platform.isAndroid) return true;
+    
+    try {
+      await _createNotificationChannel();
+      return true;
+    } catch (e) {
+      print('    ⚠️ NotificationService: Failed to create notification channel: $e');
+      return false;
+    }
+  }
+  
+  /// Request permissions safely
+  Future<bool> _requestPermissionsSafe() async {
+    try {
+      return await _requestPermissions();
+    } catch (e) {
+      print('    ⚠️ NotificationService: Failed to request permissions: $e');
       return false;
     }
   }

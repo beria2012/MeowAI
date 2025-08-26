@@ -22,37 +22,55 @@ class CatBreed {
   final String temperament;
 
   @HiveField(5)
+  @JsonKey(name: 'life_span')
   final String lifeSpan;
 
   @HiveField(6)
   final String weight;
 
   @HiveField(7)
+  @JsonKey(name: 'image_url')
   final String imageUrl;
 
   @HiveField(8)
-  final List<String> characteristics;
+  final List<String> colors;
 
   @HiveField(9)
-  final String history;
+  final List<String> characteristics;
 
   @HiveField(10)
-  final int energyLevel; // 1-5 scale
+  final String history;
 
   @HiveField(11)
-  final int sheddingLevel; // 1-5 scale
+  @JsonKey(name: 'energy_level')
+  final int energyLevel; // 1-5 scale
 
   @HiveField(12)
-  final int socialNeeds; // 1-5 scale
+  final int sheddingLevel; // 1-5 scale (default if not provided)
 
   @HiveField(13)
-  final int groomingNeeds; // 1-5 scale
+  @JsonKey(name: 'social_needs')
+  final int socialNeeds; // 1-5 scale
 
   @HiveField(14)
-  final bool isHypoallergenic;
+  @JsonKey(name: 'grooming_needs')
+  final int groomingNeeds; // 1-5 scale
 
   @HiveField(15)
+  @JsonKey(name: 'is_hypoallergenic')
+  final bool isHypoallergenic;
+
+  @HiveField(16)
+  @JsonKey(name: 'is_rare')
   final bool isRare;
+
+  @HiveField(17)
+  @JsonKey(name: 'ml_index')
+  final int? mlIndex;
+
+  @HiveField(18)
+  @JsonKey(name: 'available_for_recognition')
+  final bool? availableForRecognition;
 
   const CatBreed({
     required this.id,
@@ -63,14 +81,17 @@ class CatBreed {
     required this.lifeSpan,
     required this.weight,
     required this.imageUrl,
-    required this.characteristics,
-    required this.history,
+    required this.colors,
+    this.characteristics = const [],
+    this.history = '',
     required this.energyLevel,
-    required this.sheddingLevel,
+    this.sheddingLevel = 2,
     required this.socialNeeds,
     required this.groomingNeeds,
     required this.isHypoallergenic,
     required this.isRare,
+    this.mlIndex,
+    this.availableForRecognition,
   });
 
   factory CatBreed.fromJson(Map<String, dynamic> json) => 
@@ -87,6 +108,7 @@ class CatBreed {
     String? lifeSpan,
     String? weight,
     String? imageUrl,
+    List<String>? colors,
     List<String>? characteristics,
     String? history,
     int? energyLevel,
@@ -95,6 +117,8 @@ class CatBreed {
     int? groomingNeeds,
     bool? isHypoallergenic,
     bool? isRare,
+    int? mlIndex,
+    bool? availableForRecognition,
   }) {
     return CatBreed(
       id: id ?? this.id,
@@ -105,6 +129,7 @@ class CatBreed {
       lifeSpan: lifeSpan ?? this.lifeSpan,
       weight: weight ?? this.weight,
       imageUrl: imageUrl ?? this.imageUrl,
+      colors: colors ?? this.colors,
       characteristics: characteristics ?? this.characteristics,
       history: history ?? this.history,
       energyLevel: energyLevel ?? this.energyLevel,
@@ -113,6 +138,8 @@ class CatBreed {
       groomingNeeds: groomingNeeds ?? this.groomingNeeds,
       isHypoallergenic: isHypoallergenic ?? this.isHypoallergenic,
       isRare: isRare ?? this.isRare,
+      mlIndex: mlIndex ?? this.mlIndex,
+      availableForRecognition: availableForRecognition ?? this.availableForRecognition,
     );
   }
 

@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lottie/lottie.dart';
 
 import '../utils/theme.dart';
+import '../services/ml_service.dart';
+import '../services/breed_data_service.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -30,20 +32,59 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _startAnimations();
+    
+    // Safety timeout to force navigation if something hangs
+    Future.delayed(const Duration(seconds: 8), () {
+      if (mounted) {
+        print('⚠️ SplashScreen: Safety timeout reached, forcing navigation...');
+        _navigateToHome();
+      }
+    });
   }
 
   void _startAnimations() async {
-    // Start logo animation
-    await _animationController.forward();
+    print('🎬 SplashScreen: Starting animations and initialization...');
     
-    // Start text animation
-    await _textAnimationController.forward();
+    try {
+      // Start logo animation
+      print('🎬 SplashScreen: Starting logo animation...');
+      await _animationController.forward();
+      print('✅ SplashScreen: Logo animation complete');
+      
+      // Start text animation
+      print('🎬 SplashScreen: Starting text animation...');
+      await _textAnimationController.forward();
+      print('✅ SplashScreen: Text animation complete');
+      
+      // Initialize AI services
+      print('🤖 SplashScreen: Starting AI services check...');
+      await _initializeAIServices();
+      print('✅ SplashScreen: AI services check complete');
+      
+      // Wait a bit more then navigate
+      print('⏱️ SplashScreen: Final delay before navigation...');
+      await Future.delayed(const Duration(milliseconds: 1000));
+      
+      print('🧭 SplashScreen: Attempting navigation to home screen...');
+      await _navigateToHome();
+      
+    } catch (e) {
+      print('❌ SplashScreen: Error in animation flow: $e');
+      // Force navigation even if animations fail
+      print('🚨 SplashScreen: Force navigating to home screen...');
+      await _navigateToHome();
+    }
+  }
+  
+  Future<void> _navigateToHome() async {
+    if (!mounted) {
+      print('❌ SplashScreen: Widget not mounted, cannot navigate');
+      return;
+    }
     
-    // Wait a bit more then navigate
-    await Future.delayed(const Duration(milliseconds: 1000));
-    
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
+    try {
+      print('🧭 SplashScreen: Navigating to home screen...');
+      await Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => 
               const HomeScreen(),
@@ -56,6 +97,54 @@ class _SplashScreenState extends State<SplashScreen>
           transitionDuration: const Duration(milliseconds: 800),
         ),
       );
+      print('✅ SplashScreen: Navigation completed successfully');
+    } catch (e) {
+      print('❌ SplashScreen: Navigation failed: $e');
+      // Try simple replacement as fallback
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
+    }
+  }
+  
+  /// Initialize AI services (ML model and comprehensive breed database)
+  Future<void> _initializeAIServices() async {
+    try {
+      print('🤖 SplashScreen: Checking AI services with comprehensive database...');
+      
+      // Get singleton instances of services
+      final breedService = BreedDataService();
+      final mlService = MLService();
+      
+      print('  📚 SplashScreen: Checking comprehensive breed database...');
+      print('    Current status: ${breedService.isInitialized ? "Already initialized" : "Needs initialization"}');
+      
+      // Initialize breed data service first (ML service depends on it)
+      if (!breedService.isInitialized) {
+        print('  📚 SplashScreen: Initializing comprehensive breed database...');
+        await breedService.initialize().timeout(const Duration(seconds: 15));
+        print('  ✅ SplashScreen: Comprehensive breed database loaded with ${breedService.getAllBreeds().length} breeds');
+      } else {
+        print('  ✅ SplashScreen: Comprehensive breed database already loaded (${breedService.getAllBreeds().length} breeds)');
+      }
+      
+      print('  🧠 SplashScreen: Checking ML model for 223 breed recognition...');
+      print('    Current status: ${mlService.isInitialized ? "Already initialized" : "Needs initialization"}');
+      
+      // Initialize ML service
+      if (!mlService.isInitialized) {
+        print('  🧠 SplashScreen: Initializing ML model...');
+        await mlService.initialize().timeout(const Duration(seconds: 30));
+        print('  ✅ SplashScreen: ML model ready for 223 breed recognition');
+      } else {
+        print('  ✅ SplashScreen: ML model already ready for 223 breed recognition');
+      }
+      
+      print('🎉 SplashScreen: AI services check complete!');
+    } catch (e) {
+      print('❌ SplashScreen: Error with AI services: $e');
+      // Continue anyway to prevent app from hanging
+      print('⚠️ SplashScreen: Continuing to home screen anyway...');
     }
   }
 
@@ -145,26 +234,12 @@ class _SplashScreenState extends State<SplashScreen>
 
               const SizedBox(height: 64),
 
-              // Loading indicator
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                ),
-              )
-                  .animate(onPlay: (controller) => controller.repeat())
-                  .shimmer(
-                    duration: 1500.ms,
-                    color: Colors.white.withOpacity(0.5),
-                  ),
+              // Running cat paws animation
+              const SizedBox(
+                height: 80,
+                width: double.infinity,
+                child: RunningCatPawsAnimation(),
+              ),
 
               const SizedBox(height: 24),
 
@@ -184,61 +259,141 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
-// Custom cat paw loading animation widget
-class CatPawLoader extends StatefulWidget {
-  const CatPawLoader({super.key});
+// Running cat paws animation widget
+class RunningCatPawsAnimation extends StatefulWidget {
+  const RunningCatPawsAnimation({super.key});
 
   @override
-  State<CatPawLoader> createState() => _CatPawLoaderState();
+  State<RunningCatPawsAnimation> createState() => _RunningCatPawsAnimationState();
 }
 
-class _CatPawLoaderState extends State<CatPawLoader>
+class _RunningCatPawsAnimationState extends State<RunningCatPawsAnimation>
     with TickerProviderStateMixin {
-  late List<AnimationController> _controllers;
-  late List<Animation<double>> _animations;
+  late AnimationController _mainController;
+  late List<AnimationController> _pawControllers;
+  late List<Animation<Offset>> _pawAnimations;
+  late List<Animation<double>> _scaleAnimations;
+  late List<Animation<double>> _opacityAnimations;
+
+  final int _numberOfPaws = 6;
+  final List<Color> _pawColors = [
+    Colors.white,
+    Colors.white.withOpacity(0.9),
+    Colors.white.withOpacity(0.8),
+    Colors.white.withOpacity(0.9),
+    Colors.white,
+    Colors.white.withOpacity(0.85),
+  ];
 
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(
-      4,
+    
+    // Main controller for the overall animation cycle
+    _mainController = AnimationController(
+      duration: const Duration(milliseconds: 3000),
+      vsync: this,
+    );
+
+    // Individual controllers for each paw
+    _pawControllers = List.generate(
+      _numberOfPaws,
       (index) => AnimationController(
-        duration: const Duration(milliseconds: 600),
+        duration: Duration(milliseconds: 800 + (index * 100)), // Staggered durations
         vsync: this,
       ),
     );
 
-    _animations = _controllers.map((controller) {
-      return Tween<double>(begin: 0.5, end: 1.0).animate(
-        CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-      );
-    }).toList();
+    // Create animations for each paw
+    _pawAnimations = [];
+    _scaleAnimations = [];
+    _opacityAnimations = [];
 
-    _startAnimations();
+    for (int i = 0; i < _numberOfPaws; i++) {
+      // Position animation - paws run from left to right
+      _pawAnimations.add(
+        Tween<Offset>(
+          begin: Offset(-0.2 - (i * 0.15), 0.0), // Start off-screen left, staggered
+          end: Offset(1.2 + (i * 0.1), 0.0),     // End off-screen right
+        ).animate(
+          CurvedAnimation(
+            parent: _pawControllers[i],
+            curve: Curves.easeInOut,
+          ),
+        ),
+      );
+
+      // Scale animation - paws get bigger/smaller as they move
+      _scaleAnimations.add(
+        TweenSequence<double>([
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 0.0, end: 1.2)
+                .chain(CurveTween(curve: Curves.elasticOut)),
+            weight: 30,
+          ),
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 1.2, end: 0.8)
+                .chain(CurveTween(curve: Curves.easeInOut)),
+            weight: 40,
+          ),
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 0.8, end: 0.0)
+                .chain(CurveTween(curve: Curves.easeIn)),
+            weight: 30,
+          ),
+        ]).animate(_pawControllers[i]),
+      );
+
+      // Opacity animation - fade in and out
+      _opacityAnimations.add(
+        TweenSequence<double>([
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            weight: 25,
+          ),
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 1.0, end: 1.0),
+            weight: 50,
+          ),
+          TweenSequenceItem(
+            tween: Tween<double>(begin: 1.0, end: 0.0),
+            weight: 25,
+          ),
+        ]).animate(_pawControllers[i]),
+      );
+    }
+
+    _startAnimation();
+    
+    // Start sparkle effects
+    _mainController.repeat();
   }
 
-  void _startAnimations() async {
-    for (int i = 0; i < _controllers.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 150));
-      if (mounted) {
-        _controllers[i].forward().then((_) {
-          if (mounted) {
-            _controllers[i].reverse();
-          }
-        });
-      }
+  void _startAnimation() async {
+    // Start all paw animations with staggered delays
+    for (int i = 0; i < _numberOfPaws; i++) {
+      Future.delayed(Duration(milliseconds: i * 200), () {
+        if (mounted) {
+          _pawControllers[i].forward().then((_) {
+            if (mounted) {
+              _pawControllers[i].reset();
+            }
+          });
+        }
+      });
     }
-    
-    // Repeat the animation
-    await Future.delayed(const Duration(milliseconds: 800));
+
+    // Repeat the entire sequence
+    await Future.delayed(const Duration(milliseconds: 2500));
     if (mounted) {
-      _startAnimations();
+      _startAnimation();
     }
   }
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
+    _mainController.dispose();
+    for (var controller in _pawControllers) {
       controller.dispose();
     }
     super.dispose();
@@ -246,26 +401,95 @@ class _CatPawLoaderState extends State<CatPawLoader>
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(4, (index) {
-        return AnimatedBuilder(
-          animation: _animations[index],
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _animations[index].value,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                child: const Icon(
-                  Icons.pets,
-                  color: Colors.white,
-                  size: 20,
+    return Stack(
+      children: [
+        // Background track/path indicator
+        Positioned.fill(
+          child: Center(
+            child: Container(
+              height: 2,
+              margin: const EdgeInsets.symmetric(horizontal: 40),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.3),
+                    Colors.white.withOpacity(0.2),
+                    Colors.transparent,
+                  ],
                 ),
+                borderRadius: BorderRadius.circular(1),
               ),
-            );
-          },
-        );
-      }),
+            ),
+          ),
+        ),
+        // Animated paws
+        ...List.generate(_numberOfPaws, (index) {
+          return AnimatedBuilder(
+            animation: Listenable.merge([
+              _pawAnimations[index],
+              _scaleAnimations[index],
+              _opacityAnimations[index],
+            ]),
+            builder: (context, child) {
+              return Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: FractionalTranslation(
+                    translation: _pawAnimations[index].value,
+                    child: Transform.scale(
+                      scale: _scaleAnimations[index].value,
+                      child: Opacity(
+                        opacity: _opacityAnimations[index].value,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: _pawColors[index].withOpacity(0.3),
+                                blurRadius: 8,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.pets,
+                            color: _pawColors[index],
+                            size: 28 + (index % 2) * 4, // Slightly different sizes
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }),
+        
+        // Subtle sparkle effects
+        ...List.generate(3, (index) {
+          return AnimatedBuilder(
+            animation: _mainController,
+            builder: (context, child) {
+              return Positioned(
+                left: 60.0 + (index * 80),
+                top: 10 + (index % 2) * 15,
+                child: Opacity(
+                  opacity: (0.3 + (index * 0.2)) * 
+                      (0.5 + 0.5 * 
+                      sin(2 * pi * (_mainController.value + index * 0.33))),
+                  child: Icon(
+                    Icons.star,
+                    color: Colors.white.withOpacity(0.6),
+                    size: 8 + (index * 2),
+                  ),
+                ),
+              );
+            },
+          );
+        }),
+      ],
     );
   }
 }

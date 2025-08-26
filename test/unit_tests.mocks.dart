@@ -38,6 +38,12 @@ class MockBreedDataService extends _i1.Mock implements _i2.BreedDataService {
   }
 
   @override
+  bool get isInitialized => (super.noSuchMethod(
+        Invocation.getter(#isInitialized),
+        returnValue: false,
+      ) as bool);
+
+  @override
   _i3.Future<bool> initialize() => (super.noSuchMethod(
         Invocation.method(
           #initialize,
@@ -70,77 +76,11 @@ class MockBreedDataService extends _i1.Mock implements _i2.BreedDataService {
       )) as _i4.CatBreed?);
 
   @override
-  List<_i4.CatBreed> searchBreeds(String? query) => (super.noSuchMethod(
-        Invocation.method(
-          #searchBreeds,
-          [query],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getBreedsByOrigin(String? origin) => (super.noSuchMethod(
-        Invocation.method(
-          #getBreedsByOrigin,
-          [origin],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getBreedsByEnergyLevel(int? energyLevel) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getBreedsByEnergyLevel,
-          [energyLevel],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getHypoallergenicBreeds() => (super.noSuchMethod(
-        Invocation.method(
-          #getHypoallergenicBreeds,
-          [],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getRareBreeds() => (super.noSuchMethod(
-        Invocation.method(
-          #getRareBreeds,
-          [],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getPopularBreeds() => (super.noSuchMethod(
-        Invocation.method(
-          #getPopularBreeds,
-          [],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getFamilyFriendlyBreeds() => (super.noSuchMethod(
-        Invocation.method(
-          #getFamilyFriendlyBreeds,
-          [],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
-
-  @override
-  List<_i4.CatBreed> getApartmentFriendlyBreeds() => (super.noSuchMethod(
-        Invocation.method(
-          #getApartmentFriendlyBreeds,
-          [],
-        ),
-        returnValue: <_i4.CatBreed>[],
-      ) as List<_i4.CatBreed>);
+  _i4.CatBreed? getBreedByLabel(String? label) =>
+      (super.noSuchMethod(Invocation.method(
+        #getBreedByLabel,
+        [label],
+      )) as _i4.CatBreed?);
 
   @override
   Map<String, dynamic> getBreedStatistics() => (super.noSuchMethod(
@@ -442,6 +382,12 @@ class MockMLService extends _i1.Mock implements _i8.MLService {
   }
 
   @override
+  bool get isInitialized => (super.noSuchMethod(
+        Invocation.getter(#isInitialized),
+        returnValue: false,
+      ) as bool);
+
+  @override
   _i3.Future<bool> initialize() => (super.noSuchMethod(
         Invocation.method(
           #initialize,
@@ -449,6 +395,24 @@ class MockMLService extends _i1.Mock implements _i8.MLService {
         ),
         returnValue: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
+
+  @override
+  _i3.Future<_i6.RecognitionResult?> recognizeBreedEnhanced(
+    String? imagePath, {
+    bool? useTestTimeAugmentation = true,
+    int? numAugmentations = 5,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #recognizeBreedEnhanced,
+          [imagePath],
+          {
+            #useTestTimeAugmentation: useTestTimeAugmentation,
+            #numAugmentations: numAugmentations,
+          },
+        ),
+        returnValue: _i3.Future<_i6.RecognitionResult?>.value(),
+      ) as _i3.Future<_i6.RecognitionResult?>);
 
   @override
   _i3.Future<_i6.RecognitionResult?> recognizeBreed(String? imagePath) =>
@@ -459,6 +423,15 @@ class MockMLService extends _i1.Mock implements _i8.MLService {
         ),
         returnValue: _i3.Future<_i6.RecognitionResult?>.value(),
       ) as _i3.Future<_i6.RecognitionResult?>);
+
+  @override
+  Map<String, dynamic> getPerformanceStats() => (super.noSuchMethod(
+        Invocation.method(
+          #getPerformanceStats,
+          [],
+        ),
+        returnValue: <String, dynamic>{},
+      ) as Map<String, dynamic>);
 
   @override
   Map<String, dynamic> getModelInfo() => (super.noSuchMethod(

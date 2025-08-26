@@ -1,10 +1,25 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:path/path.dart' as path;
+
+/// Custom exception for permission-related errors
+class PermissionException implements Exception {
+  final String message;
+  final ph.PermissionStatus status;
+  
+  const PermissionException(this.message, this.status);
+  
+  @override
+  String toString() => 'PermissionException: $message';
+  
+  bool get isPermanentlyDenied => status == ph.PermissionStatus.permanentlyDenied;
+  bool get canOpenSettings => isPermanentlyDenied || status == ph.PermissionStatus.restricted;
+}
 
 class CameraService {
   final ImagePicker _picker = ImagePicker();
@@ -17,18 +32,12 @@ class CameraService {
   factory CameraService() => _instance;
   CameraService._internal();
 
-  /// Initialize camera service and request permissions
+  /// Initialize camera service (without requesting permissions)
   Future<bool> initialize() async {
     if (_isInitialized) return true;
     
     try {
-      // Request camera permission
-      final cameraPermission = await Permission.camera.request();
-      if (!cameraPermission.isGranted) {
-        throw Exception('Camera permission not granted');
-      }
-
-      // Get available cameras
+      // Get available cameras without requesting permissions yet
       _cameras = await availableCameras();
       
       if (_cameras == null || _cameras!.isEmpty) {
@@ -36,7 +45,7 @@ class CameraService {
       }
 
       _isInitialized = true;
-      print('Camera service initialized with ${_cameras!.length} cameras');
+      print('Camera service initialized with ${_cameras!.length} cameras (permissions will be requested when needed)');
       return true;
     } catch (e) {
       print('Error initializing camera service: $e');
@@ -58,6 +67,12 @@ class CameraService {
     }
 
     try {
+      // Request camera permission when actually needed
+      final cameraPermission = await ph.Permission.camera.request();
+      if (!cameraPermission.isGranted) {
+        throw Exception('Camera permission not granted');
+      }
+
       // Dispose existing controller if any
       await _cameraController?.dispose();
 
@@ -99,15 +114,106 @@ class CameraService {
     }
   }
 
-  /// Pick image from gallery
+  /// Pick image from gallery with comprehensive permission handling
   Future<String?> pickImageFromGallery() async {
     try {
-      // Request storage permission
-      final storagePermission = await Permission.photos.request();
-      if (!storagePermission.isGranted) {
-        throw Exception('Storage permission not granted');
+      print('🖼️ Gallery: Initiating gallery picker...');
+      
+      // For Android, we need to handle different permission types based on API level
+      ph.Permission targetPermission;
+      if (Platform.isAndroid) {
+        // Android 13+ (API 33+) uses granular media permissions
+        targetPermission = ph.Permission.photos;
+      } else {
+        // iOS uses photos permission
+        targetPermission = ph.Permission.photos;
       }
-
+      
+      // Check current permission status
+      final currentStatus = await targetPermission.status;
+      print('🔐 Gallery: Current permission status: $currentStatus');
+      
+      if (currentStatus.isGranted || currentStatus.isLimited) {
+        // Permission granted or limited access (iOS) - proceed directly
+        print('✅ Gallery: Permission already granted, proceeding...');
+        return await _pickImageFromGalleryInternal();
+      }
+      
+      if (currentStatus.isPermanentlyDenied) {
+        // User has permanently denied permission
+        print('❌ Gallery: Permission permanently denied');
+        final message = Platform.isAndroid 
+            ? 'Photo access has been permanently denied. '
+              'Please enable it in Settings > Apps > MeowAI > Permissions > Photos'
+            : 'Photo library access has been permanently denied. '
+              'Please enable it in Settings > Privacy & Security > Photos > MeowAI';
+        throw PermissionException(message, ph.PermissionStatus.permanentlyDenied);
+      }
+      
+      if (currentStatus.isRestricted) {
+        // Permission is restricted (parental controls, etc.)
+        print('⚠️ Gallery: Permission is restricted');
+        throw PermissionException(
+          'Photo access is restricted on this device. Please check parental controls or device restrictions.',
+          ph.PermissionStatus.restricted,
+        );
+      }
+      
+      // Request permission
+      print('📱 Gallery: Requesting permission...');
+      final permissionResult = await targetPermission.request();
+      print('🔐 Gallery: Permission request result: $permissionResult');
+      
+      switch (permissionResult) {
+        case ph.PermissionStatus.granted:
+        case ph.PermissionStatus.limited: // iOS limited access is acceptable
+          print('✅ Gallery: Permission granted, proceeding...');
+          return await _pickImageFromGalleryInternal();
+          
+        case ph.PermissionStatus.denied:
+          print('❌ Gallery: Permission denied');
+          throw PermissionException(
+            'Photo library access is required to select images from your gallery. '
+            'Please allow access when prompted.',
+            ph.PermissionStatus.denied,
+          );
+          
+        case ph.PermissionStatus.permanentlyDenied:
+          print('❌ Gallery: Permission permanently denied after request');
+          final message = Platform.isAndroid 
+              ? 'Photo access has been permanently denied. '
+                'Please enable it in Settings > Apps > MeowAI > Permissions > Photos'
+              : 'Photo library access has been permanently denied. '
+                'Please enable it in Settings > Privacy & Security > Photos > MeowAI';
+          throw PermissionException(message, ph.PermissionStatus.permanentlyDenied);
+          
+        case ph.PermissionStatus.restricted:
+          print('⚠️ Gallery: Permission is restricted after request');
+          throw PermissionException(
+            'Photo library access is restricted on this device. Please check device restrictions.',
+            ph.PermissionStatus.restricted,
+          );
+          
+        case ph.PermissionStatus.provisional:
+          // iOS provisional permission, should work
+          print('📱 Gallery: Provisional permission granted (iOS)');
+          return await _pickImageFromGalleryInternal();
+      }
+    } on PermissionException {
+      // Re-throw permission exceptions as-is
+      rethrow;
+    } catch (e) {
+      print('❌ Gallery: Unexpected error accessing gallery: $e');
+      // Wrap other exceptions in a user-friendly message
+      throw Exception('Failed to access photo gallery: ${e.toString()}');
+    }
+  }
+  
+  /// Internal method to pick image from gallery (assumes permission is granted)
+  Future<String?> _pickImageFromGalleryInternal() async {
+    try {
+      print('🖼️ Gallery: Opening image picker...');
+      
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
         imageQuality: 85,
@@ -115,31 +221,60 @@ class CameraService {
         maxHeight: 1024,
       );
       
-      if (image == null) return null;
+      if (image == null) {
+        print('📷 Gallery: User cancelled selection');
+        return null;
+      }
+      
+      print('🖼️ Gallery: Image selected: ${image.path}');
+      
+      // Verify file exists and is readable
+      final file = File(image.path);
+      if (!await file.exists()) {
+        print('❌ Gallery: Selected file does not exist: ${image.path}');
+        throw Exception('Selected image file is not accessible. Please try again.');
+      }
+      
+      // Check file size (basic validation)
+      final fileSize = await file.length();
+      print('📊 Gallery: Image size: ${(fileSize / 1024 / 1024).toStringAsFixed(2)} MB');
+      
+      if (fileSize == 0) {
+        print('❌ Gallery: Selected file is empty');
+        throw Exception('Selected image file is empty. Please choose a different image.');
+      }
       
       // Save to app directory
       final String savedPath = await _saveImageToAppDirectory(image.path);
+      print('✅ Gallery: Image successfully saved: $savedPath');
       
       return savedPath;
+    } on Exception catch (e) {
+      print('❌ Gallery: Exception during image selection: $e');
+      rethrow; // Re-throw exceptions as-is for UI handling
     } catch (e) {
-      print('Error picking image from gallery: $e');
-      return null;
+      print('❌ Gallery: Unexpected error during image selection: $e');
+      throw Exception('Failed to select image from gallery: ${e.toString()}');
     }
   }
 
-  /// Pick image using image picker with source selection
+  /// Pick image using image picker with source selection and on-demand permissions
   Future<String?> pickImage({required ImageSource source}) async {
     try {
-      // Request appropriate permissions
-      PermissionStatus permission;
+      // Request appropriate permissions when actually needed
+      ph.PermissionStatus permission;
+      String permissionType;
+      
       if (source == ImageSource.camera) {
-        permission = await Permission.camera.request();
+        permission = await ph.Permission.camera.request();
+        permissionType = 'camera';
       } else {
-        permission = await Permission.photos.request();
+        permission = await ph.Permission.photos.request();
+        permissionType = 'photo library';
       }
       
       if (!permission.isGranted) {
-        throw Exception('Permission not granted for ${source.name}');
+        throw Exception('$permissionType access is required to ${source == ImageSource.camera ? "take photos" : "select images"}');
       }
 
       final XFile? image = await _picker.pickImage(
@@ -157,8 +292,8 @@ class CameraService {
       
       return savedPath;
     } catch (e) {
-      print('Error picking image: $e');
-      return null;
+      print('Error picking image from ${source.name}: $e');
+      rethrow; // Re-throw to allow UI to handle the error
     }
   }
 
@@ -259,8 +394,8 @@ class CameraService {
 
   /// Check camera permissions
   Future<Map<String, bool>> checkPermissions() async {
-    final cameraStatus = await Permission.camera.status;
-    final storageStatus = await Permission.photos.status;
+    final cameraStatus = await ph.Permission.camera.status;
+    final storageStatus = await ph.Permission.photos.status;
     
     return {
       'camera': cameraStatus.isGranted,
@@ -270,14 +405,77 @@ class CameraService {
 
   /// Request camera permissions
   Future<bool> requestCameraPermission() async {
-    final status = await Permission.camera.request();
+    final status = await ph.Permission.camera.request();
     return status.isGranted;
   }
 
   /// Request storage permissions
   Future<bool> requestStoragePermission() async {
-    final status = await Permission.photos.request();
+    final status = await ph.Permission.photos.request();
     return status.isGranted;
+  }
+
+  /// Open app settings for permission management
+  Future<bool> openAppSettings() async {
+    try {
+      return await ph.openAppSettings();
+    } catch (e) {
+      print('Error opening app settings: $e');
+      return false;
+    }
+  }
+
+  /// Check if we can request photo permission
+  Future<bool> canRequestPhotoPermission() async {
+    final status = await ph.Permission.photos.status;
+    return !status.isPermanentlyDenied && !status.isRestricted;
+  }
+  
+  /// Get detailed photo permission status with platform-specific information
+  Future<Map<String, dynamic>> getPhotoPermissionStatus() async {
+    final status = await ph.Permission.photos.status;
+    
+    return {
+      'status': status,
+      'isGranted': status.isGranted,
+      'isLimited': status.isLimited,
+      'isDenied': status.isDenied,
+      'isPermanentlyDenied': status.isPermanentlyDenied,
+      'isRestricted': status.isRestricted,
+      'canRequest': !status.isPermanentlyDenied && !status.isRestricted,
+      'shouldShowRationale': Platform.isAndroid ? await ph.Permission.photos.shouldShowRequestRationale : false,
+      'platform': Platform.operatingSystem,
+    };
+  }
+  
+  /// Request gallery permission with comprehensive error handling
+  Future<ph.PermissionStatus> requestGalleryPermissionWithFeedback() async {
+    try {
+      print('🔐 Requesting gallery permission...');
+      
+      // Check if we should show rationale (Android)
+      if (Platform.isAndroid) {
+        final shouldShow = await ph.Permission.photos.shouldShowRequestRationale;
+        if (shouldShow) {
+          print('📱 Android: Should show permission rationale to user');
+        }
+      }
+      
+      // Request the permission
+      final result = await ph.Permission.photos.request();
+      print('🔐 Gallery permission request result: $result');
+      
+      return result;
+    } catch (e) {
+      print('❌ Error requesting gallery permission: $e');
+      return ph.PermissionStatus.denied;
+    }
+  }
+  
+  /// Check if gallery access is currently available (permission granted)
+  Future<bool> isGalleryAccessAvailable() async {
+    final status = await ph.Permission.photos.status;
+    return status.isGranted || status.isLimited;
   }
 
   /// Clean up old images (older than specified days)

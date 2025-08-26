@@ -16,13 +16,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    
-    tasks.withType<JavaCompile> {
-        options.compilerArgs.addAll(listOf(
-            "-Xlint:-options",
-            "-Xlint:-deprecation"
-        ))
-    }
 
     kotlinOptions {
         jvmTarget = "21"
@@ -53,6 +46,11 @@ flutter {
 }
 
 dependencies {
+    // TensorFlow Lite 2.12.0 - Maximum compatibility with older opcodes
+    implementation("org.tensorflow:tensorflow-lite:2.12.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.2")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.12.0")
+    
     // Core library desugaring for modern Java features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     implementation("androidx.appcompat:appcompat:1.6.1")

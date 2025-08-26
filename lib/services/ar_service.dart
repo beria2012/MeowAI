@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 // ARCore import temporarily disabled for iOS compatibility
 // import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 
 import '../models/cat_breed.dart';
-import '../models/recognition_result.dart';
 
 class ARService {
   // Singleton pattern

@@ -3,6 +3,14 @@ allprojects {
         google()
         mavenCentral()
     }
+    
+    // Configure Java compilation for all subprojects
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf(
+            "-Xlint:-options",
+            "-Xlint:-deprecation"
+        ))
+    }
 }
 
 val newBuildDir: Directory =
