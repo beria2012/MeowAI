@@ -33,6 +33,9 @@ class DatabaseService {
   factory DatabaseService() => _instance;
   DatabaseService._internal();
 
+  /// Check if database is initialized
+  bool get isInitialized => _isInitialized;
+
   /// Initialize the database service
   Future<bool> initialize() async {
     if (_isInitialized) return true;

@@ -11,6 +11,9 @@ import '../widgets/cat_paw_button.dart';
 import 'camera_screen.dart';
 import 'basic_screens.dart';
 import 'ar_screen.dart';
+import 'favorites_screen.dart';
+import 'share_screen.dart';
+import 'more_features_screen.dart';
 import 'model_demo_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -605,48 +608,6 @@ class _HomeTabState extends State<_HomeTab> {
     );
   }
 
-  void _showComingSoonDialog(String feature) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-          ),
-          title: Row(
-            children: [
-              const Icon(
-                Icons.access_time,
-                color: AppTheme.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Coming Soon',
-                style: AppTextStyles.headline3.copyWith(
-                  color: AppTheme.primaryColor,
-                ),
-              ),
-            ],
-          ),
-          content: Text(
-            '$feature is currently under development and will be available in a future update. Stay tuned!',
-            style: AppTextStyles.bodyMedium,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: TextButton.styleFrom(
-                foregroundColor: AppTheme.primaryColor,
-              ),
-              child: const Text('Got it'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildFeaturesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -692,7 +653,12 @@ class _HomeTabState extends State<_HomeTab> {
               description: 'Saved breeds & photos',
               color: AppTheme.errorColor,
               onTap: () {
-                _showComingSoonDialog('Favorites');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FavoritesScreen(),
+                  ),
+                );
               },
             ),
             FeatureCard(
@@ -701,7 +667,12 @@ class _HomeTabState extends State<_HomeTab> {
               description: 'Share your discoveries',
               color: AppTheme.accentColor,
               onTap: () {
-                _showComingSoonDialog('Share');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ShareScreen(),
+                  ),
+                );
               },
             ),
             FeatureCard(
@@ -721,10 +692,15 @@ class _HomeTabState extends State<_HomeTab> {
             FeatureCard(
               icon: Icons.eco,
               title: 'More Features',
-              description: 'Coming soon...',
+              description: 'Additional tools & settings',
               color: Colors.green,
               onTap: () {
-                _showComingSoonDialog('More Features');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MoreFeaturesScreen(),
+                  ),
+                );
               },
             ),
           ],

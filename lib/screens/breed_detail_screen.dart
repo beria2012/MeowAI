@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../utils/theme.dart';
 import '../models/cat_breed.dart';
+import '../services/database_service.dart';
 
 class BreedDetailScreen extends StatefulWidget {
   final CatBreed breed;
@@ -22,8 +23,11 @@ class _BreedDetailScreenState extends State<BreedDetailScreen>
   late AnimationController _headerAnimationController;
   late AnimationController _fabAnimationController;
   
+  final DatabaseService _databaseService = DatabaseService();
+  
   bool _isHeaderExpanded = true;
   bool _isFavorite = false;
+  bool _isLoadingFavorite = false;
 
   @override
   void initState() {
@@ -42,6 +46,8 @@ class _BreedDetailScreenState extends State<BreedDetailScreen>
     _scrollController.addListener(_onScroll);
     _headerAnimationController.forward();
     _fabAnimationController.forward();
+    
+    _checkFavoriteStatus();
   }
 
   @override
@@ -69,27 +75,121 @@ class _BreedDetailScreenState extends State<BreedDetailScreen>
     }
   }
 
-  void _toggleFavorite() {
+  Future<void> _checkFavoriteStatus() async {
+    try {
+      if (!_databaseService.isInitialized) {
+        await _databaseService.initialize();
+      }
+      
+      final favorites = await _databaseService.getFavorites();
+      final isFavorite = favorites.any(
+        (favorite) => favorite['breed_id'] == widget.breed.id,
+      );
+      
+      if (mounted) {
+        setState(() {
+          _isFavorite = isFavorite;
+        });
+      }
+    } catch (e) {
+      print('❌ BreedDetailScreen: Error checking favorite status: $e');
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_isLoadingFavorite) return;
+    
     setState(() {
-      _isFavorite = !_isFavorite;
+      _isLoadingFavorite = true;
     });
     
     _fabAnimationController.forward().then((_) {
       _fabAnimationController.reverse();
     });
     
-    // Here you would typically save to database
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _isFavorite 
-              ? '${widget.breed.name} added to favorites'
-              : '${widget.breed.name} removed from favorites',
-        ),
-        backgroundColor: AppTheme.primaryColor,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    try {
+      if (!_databaseService.isInitialized) {
+        await _databaseService.initialize();
+      }
+      
+      bool success;
+      if (_isFavorite) {
+        // Remove from favorites
+        final favorites = await _databaseService.getFavorites();
+        final favorite = favorites.firstWhere(
+          (f) => f['breed_id'] == widget.breed.id,
+          orElse: () => {},
+        );
+        
+        if (favorite.isNotEmpty) {
+          success = await _databaseService.removeFavorite(favorite['id'] as String);
+        } else {
+          success = false;
+        }
+      } else {
+        // Add to favorites
+        success = await _databaseService.addToFavorites(
+          id: 'breed_${widget.breed.id}_${DateTime.now().millisecondsSinceEpoch}',
+          breedId: widget.breed.id,
+          note: 'Added from breed details',
+        );
+      }
+      
+      if (success && mounted) {
+        setState(() {
+          _isFavorite = !_isFavorite;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(
+                  _isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _isFavorite 
+                      ? '${widget.breed.name} added to favorites'
+                      : '${widget.breed.name} removed from favorites',
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            backgroundColor: _isFavorite ? AppTheme.primaryColor : AppTheme.textSecondary,
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to update favorites. Please try again.'),
+            backgroundColor: AppTheme.errorColor,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      print('❌ BreedDetailScreen: Error toggling favorite: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error updating favorites: $e'),
+            backgroundColor: AppTheme.errorColor,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingFavorite = false;
+        });
+      }
+    }
   }
 
   @override
@@ -587,12 +687,21 @@ class _BreedDetailScreenState extends State<BreedDetailScreen>
         return Transform.scale(
           scale: 1.0 + (_fabAnimationController.value * 0.1),
           child: FloatingActionButton(
-            onPressed: _toggleFavorite,
+            onPressed: _isLoadingFavorite ? null : _toggleFavorite,
             backgroundColor: _isFavorite ? AppTheme.errorColor : AppTheme.primaryColor,
-            child: Icon(
-              _isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.white,
-            ),
+            child: _isLoadingFavorite
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : Icon(
+                    _isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.white,
+                  ),
           ),
         );
       },

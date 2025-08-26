@@ -164,6 +164,19 @@ class SharingService {
     }
   }
 
+  /// Build share text without performing the share action
+  String buildShareText({
+    required RecognitionResult result,
+    String? customMessage,
+    bool includeAppPromo = true,
+  }) {
+    return _buildRecognitionMessage(
+      result,
+      customMessage,
+      includeAppPromo,
+    );
+  }
+
   /// Build recognition result message
   String _buildRecognitionMessage(
     RecognitionResult result, 
